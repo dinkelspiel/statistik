@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans:
+        'Geist Variable', Geist, ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji';
+
+    --radius-lg: 1.25rem;
+    --radius-md: 1rem;
+    --radius-sm: 0.75rem;
+
+    --color-background: #fbf5ed;
+    --color-foreground: #3d2d28;
+    --color-card: #fffaf4;
+    --color-card-foreground: #3d2d28;
+    --color-popover: #fffaf4;
+    --color-popover-foreground: #3d2d28;
+    --color-primary: #c75d50;
+    --color-primary-foreground: #fffaf4;
+    --color-secondary: #f2e5d8;
+    --color-secondary-foreground: #4b3832;
+    --color-muted: #f2e5d8;
+    --color-muted-foreground: #78665f;
+    --color-accent: #f5ded8;
+    --color-accent-foreground: #7c4139;
+    --color-destructive: #b83d37;
+    --color-destructive-foreground: #ffffff;
+    --color-border: #eadbd0;
+    --color-input: #ddc9bc;
+    --color-ring: #c75d50;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background font-sans text-foreground antialiased;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
