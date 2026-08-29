@@ -6,6 +6,11 @@ export type StatisticPoint = {
     value: number;
 };
 
+export type StatisticPointExplanation = {
+    label: string;
+    description: string;
+};
+
 export type StatisticSeries = {
     slug: string;
     title: string;
@@ -21,5 +26,6 @@ export type StatisticSeries = {
     sourceUrl: string;
     sourceUpdatedAt: string | null;
     syncedAt: string | null;
+    pointExplanations: StatisticPointExplanation[];
     points: StatisticPoint[];
 };

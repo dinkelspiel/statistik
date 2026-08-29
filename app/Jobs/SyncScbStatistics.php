@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\EurostatStatisticsClient;
 use App\Services\ScbStatisticsClient;
 use App\Services\WorldBankStatisticsClient;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -19,8 +20,10 @@ class SyncScbStatistics implements ShouldBeUnique, ShouldQueue
     public function handle(
         ScbStatisticsClient $scbClient,
         WorldBankStatisticsClient $worldBankClient,
+        EurostatStatisticsClient $eurostatClient,
     ): void {
         $scbClient->syncAll();
         $worldBankClient->syncAll();
+        $eurostatClient->syncAll();
     }
 }

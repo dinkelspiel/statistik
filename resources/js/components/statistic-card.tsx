@@ -293,6 +293,32 @@ export function StatisticCard({
                                     <p className="mt-2 max-w-3xl text-sm leading-relaxed text-[#6f5a52]">
                                         {series.explanation}
                                     </p>
+                                    {series.pointExplanations.length > 0 && (
+                                        <div className="mt-5">
+                                            <h4 className="text-sm font-semibold text-[#59443c]">
+                                                Vad ingår i varje område?
+                                            </h4>
+                                            <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+                                                {series.pointExplanations.map(
+                                                    (point) => (
+                                                        <div
+                                                            key={point.label}
+                                                            className="rounded-2xl bg-white/45 px-4 py-3"
+                                                        >
+                                                            <dt className="text-sm font-semibold text-[#59443c]">
+                                                                {point.label}
+                                                            </dt>
+                                                            <dd className="mt-1 text-sm leading-relaxed text-[#6f5a52]">
+                                                                {
+                                                                    point.description
+                                                                }
+                                                            </dd>
+                                                        </div>
+                                                    ),
+                                                )}
+                                            </dl>
+                                        </div>
+                                    )}
                                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[#6f5a52]">
                                         <span className="font-semibold text-[#59443c]">
                                             Så läser du grafen:

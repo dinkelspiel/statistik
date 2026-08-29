@@ -11,10 +11,11 @@ class StatisticsDashboardController extends Controller
     public function __invoke(): Response
     {
         $catalogSlugs = [];
+        $definitionsBySlug = [];
         $explanations = config('statistic_explanations', []);
         $definitions = config('statistics.series', []);
 
-        if (! is_array($explanations)) {
+        if (!is_array($explanations)) {
             $explanations = [];
         }
 
@@ -22,6 +23,7 @@ class StatisticsDashboardController extends Controller
             foreach ($definitions as $definition) {
                 if (is_array($definition) && is_string($definition['slug'] ?? null)) {
                     $catalogSlugs[] = $definition['slug'];
+                    $definitionsBySlug[$definition['slug']] = $definition;
                 }
             }
         }
@@ -50,6 +52,11 @@ class StatisticsDashboardController extends Controller
 
         foreach ($records as $item) {
             $points = [];
+            $definition = $definitionsBySlug[$item->slug] ?? [];
+            $configuredPointExplanations = is_array($definition['point_explanations'] ?? null)
+                ? $definition['point_explanations']
+                : [];
+            $pointExplanations = [];
 
             foreach ($item->points as $point) {
                 $points[] = [
@@ -59,6 +66,13 @@ class StatisticsDashboardController extends Controller
                     'periodStart' => $point->period_start->toDateString(),
                     'value' => $point->value,
                 ];
+
+                if (is_string($configuredPointExplanations[$point->geography] ?? null)) {
+                    $pointExplanations[$point->geography] = [
+                        'label' => $point->geography_label,
+                        'description' => $configuredPointExplanations[$point->geography],
+                    ];
+                }
             }
 
             $series[] = [
@@ -78,6 +92,7 @@ class StatisticsDashboardController extends Controller
                 'sourceUrl' => $item->source_url,
                 'sourceUpdatedAt' => $item->source_updated_at?->toIso8601String(),
                 'syncedAt' => $item->synced_at?->toIso8601String(),
+                'pointExplanations' => array_values($pointExplanations),
                 'points' => $points,
             ];
         }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SyncScbStatistics;
+use App\Services\EurostatStatisticsClient;
 use App\Services\ScbStatisticsClient;
 use App\Services\WorldBankStatisticsClient;
 use Illuminate\Console\Command;
@@ -16,10 +17,12 @@ class SyncStatistics extends Command
     public function handle(
         ScbStatisticsClient $scbClient,
         WorldBankStatisticsClient $worldBankClient,
+        EurostatStatisticsClient $eurostatClient,
     ): int {
         if ($this->option('now')) {
-            $this->components->task('Fetching official SCB datasets', fn () => $scbClient->syncAll());
-            $this->components->task('Fetching international comparisons', fn () => $worldBankClient->syncAll());
+            $this->components->task('Fetching official SCB datasets', fn() => $scbClient->syncAll());
+            $this->components->task('Fetching international comparisons', fn() => $worldBankClient->syncAll());
+            $this->components->task('Fetching government expenditure data', fn() => $eurostatClient->syncAll());
             $this->components->info('Statistics are up to date.');
 
             return self::SUCCESS;

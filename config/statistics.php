@@ -3,6 +3,7 @@
 return [
     'scb_base_url' => env('SCB_API_URL', 'https://api.scb.se/OV0104/v1/doris/sv/ssd'),
     'world_bank_base_url' => env('WORLD_BANK_API_URL', 'https://api.worldbank.org/v2'),
+    'eurostat_base_url' => env('EUROSTAT_API_URL', 'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data'),
 
     'series' => [
         [
@@ -167,6 +168,67 @@ return [
                 'Skattetyp' => ['102'],
                 'ContentsCode' => ['000000SP'],
                 'Tid' => ['*'],
+            ],
+        ],
+        [
+            'slug' => 'sveriges-skatteintakter',
+            'path' => 'NR/NR0103/NR0103J/SkatteIntakt',
+            'title' => 'Sveriges totala skatteintäkter',
+            'short_title' => 'Skatteintäkter',
+            'description' => 'Sveriges samlade skatteintäkter enligt statsbudgetens struktur. Beloppen visas i löpande priser och omfattar hela ekonomin.',
+            'unit' => 'miljoner kr',
+            'frequency' => 'year',
+            'category' => 'Offentlig ekonomi',
+            'chart_type' => 'line',
+            'accent' => 'ochre',
+            'query' => [
+                'Skattetyp' => ['190'],
+                'ContentsCode' => ['000000TE'],
+                'Tid' => ['*'],
+            ],
+        ],
+        [
+            'slug' => 'sveriges-statsbudget',
+            'source' => 'eurostat',
+            'dataset' => 'gov_10a_exp',
+            'title' => 'Sveriges statsbudget – vart pengarna går',
+            'short_title' => 'Statsbudgetens fördelning',
+            'description' => 'Statliga utgifter fördelade efter ändamål. Varje område visas som andel av statens totala utgifter, vilket gör prioriteringarna jämförbara mellan år.',
+            'unit' => 'procent av statliga utgifter',
+            'frequency' => 'year',
+            'category' => 'Offentlig ekonomi',
+            'chart_type' => 'area',
+            'accent' => 'ochre',
+            'query' => [
+                'freq' => 'A',
+                'unit' => 'MIO_NAC',
+                'sector' => 'S1311',
+                'na_item' => 'TE',
+                'geo' => 'SE',
+            ],
+            'breakdown' => [
+                'GF01' => 'Förvaltning och statsskuld',
+                'GF02' => 'Försvar',
+                'GF03' => 'Polis och rättsväsende',
+                'GF04' => 'Näringsliv och transporter',
+                'GF05' => 'Miljöskydd',
+                'GF06' => 'Bostäder och samhällsplanering',
+                'GF07' => 'Hälso- och sjukvård',
+                'GF08' => 'Kultur och fritid',
+                'GF09' => 'Utbildning',
+                'GF10' => 'Socialt skydd och bidrag',
+            ],
+            'point_explanations' => [
+                'GF01' => 'Allmän offentlig förvaltning, bland annat regering och riksdag, utrikesförvaltning, bistånd, grundforskning samt räntor och andra kostnader för statsskulden.',
+                'GF02' => 'Militärt och civilt försvar, försvarsmateriel, internationellt militärt stöd samt forskning och utveckling inom försvarsområdet.',
+                'GF03' => 'Polis, räddningstjänst, domstolar, kriminalvård och övriga insatser för trygghet och rättskipning.',
+                'GF04' => 'Statliga insatser för bland annat transporter, energi, jord- och skogsbruk, näringsliv, kommunikationer och ekonomisk utveckling.',
+                'GF05' => 'Avfall och avlopp, åtgärder mot föroreningar, skydd av natur och biologisk mångfald samt miljöforskning.',
+                'GF06' => 'Bostadsförsörjning, samhällsutveckling, vattenförsörjning, gatubelysning och andra gemensamma bostadsnära funktioner.',
+                'GF07' => 'Läkemedel och medicinsk utrustning, öppen vård, sjukhusvård, folkhälsoarbete samt forskning inom hälsoområdet.',
+                'GF08' => 'Idrott och fritid, kultur, bibliotek, museer, public service och andra kulturella eller religiösa verksamheter.',
+                'GF09' => 'Förskola, grundskola, gymnasium, högre utbildning, studiestöd och andra tjänster som hör till utbildningssystemet.',
+                'GF10' => 'Pensioner och stöd vid sjukdom, funktionsnedsättning, arbetslöshet, familjebildning, bostadsbehov och social utsatthet. Det är alltså bredare än enbart behovsprövade bidrag.',
             ],
         ],
         [
@@ -824,14 +886,16 @@ return [
                         'ContentsCode' => ['000003SW'],
                         'Tid' => ['*'],
                     ],
-                    'additional_sources' => [[
-                        'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
-                        'query' => [
-                            'SNI92' => ['PK'],
-                            'ContentsCode' => ['MI1301A3'],
-                            'Tid' => ['*'],
-                        ],
-                    ]],
+                    'additional_sources' => [
+                        [
+                            'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
+                            'query' => [
+                                'SNI92' => ['PK'],
+                                'ContentsCode' => ['MI1301A3'],
+                                'Tid' => ['*'],
+                            ],
+                        ]
+                    ],
                 ],
                 [
                     'code' => 'ELECTRICITY',
@@ -842,14 +906,16 @@ return [
                         'ContentsCode' => ['000003SW'],
                         'Tid' => ['*'],
                     ],
-                    'additional_sources' => [[
-                        'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
-                        'query' => [
-                            'SNI92' => ['PK'],
-                            'ContentsCode' => ['MI1301A6'],
-                            'Tid' => ['*'],
-                        ],
-                    ]],
+                    'additional_sources' => [
+                        [
+                            'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
+                            'query' => [
+                                'SNI92' => ['PK'],
+                                'ContentsCode' => ['MI1301A6'],
+                                'Tid' => ['*'],
+                            ],
+                        ]
+                    ],
                 ],
                 [
                     'code' => 'CARBON',
@@ -860,14 +926,16 @@ return [
                         'ContentsCode' => ['000003SW'],
                         'Tid' => ['*'],
                     ],
-                    'additional_sources' => [[
-                        'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
-                        'query' => [
-                            'SNI92' => ['PK'],
-                            'ContentsCode' => ['MI1301A4'],
-                            'Tid' => ['*'],
-                        ],
-                    ]],
+                    'additional_sources' => [
+                        [
+                            'path' => 'MI/MI1301/MI1301E/MiljoSkattSNI',
+                            'query' => [
+                                'SNI92' => ['PK'],
+                                'ContentsCode' => ['MI1301A4'],
+                                'Tid' => ['*'],
+                            ],
+                        ]
+                    ],
                 ],
                 [
                     'code' => 'VEHICLE',
@@ -917,16 +985,18 @@ return [
                 'ContentsCode' => ['000007SR'],
                 'Tid' => ['*'],
             ],
-            'additional_sources' => [[
-                'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
-                'query' => [
-                    'Region' => ['00'],
-                    'Forandringar' => ['115'],
-                    'Kon' => ['1+2'],
-                    'ContentsCode' => ['000003KD'],
-                    'Tid' => ['*'],
-                ],
-            ]],
+            'additional_sources' => [
+                [
+                    'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
+                    'query' => [
+                        'Region' => ['00'],
+                        'Forandringar' => ['115'],
+                        'Kon' => ['1+2'],
+                        'ContentsCode' => ['000003KD'],
+                        'Tid' => ['*'],
+                    ],
+                ]
+            ],
         ],
         [
             'slug' => 'doda',
@@ -946,16 +1016,18 @@ return [
                 'ContentsCode' => ['000007SR'],
                 'Tid' => ['*'],
             ],
-            'additional_sources' => [[
-                'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
-                'query' => [
-                    'Region' => ['00'],
-                    'Forandringar' => ['130'],
-                    'Kon' => ['1+2'],
-                    'ContentsCode' => ['000003KD'],
-                    'Tid' => ['*'],
-                ],
-            ]],
+            'additional_sources' => [
+                [
+                    'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
+                    'query' => [
+                        'Region' => ['00'],
+                        'Forandringar' => ['130'],
+                        'Kon' => ['1+2'],
+                        'ContentsCode' => ['000003KD'],
+                        'Tid' => ['*'],
+                    ],
+                ]
+            ],
         ],
         [
             'slug' => 'flyttningsoverskott',
@@ -975,16 +1047,18 @@ return [
                 'ContentsCode' => ['000007SR'],
                 'Tid' => ['*'],
             ],
-            'additional_sources' => [[
-                'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
-                'query' => [
-                    'Region' => ['00'],
-                    'Forandringar' => ['230'],
-                    'Kon' => ['1+2'],
-                    'ContentsCode' => ['000003KD'],
-                    'Tid' => ['*'],
-                ],
-            ]],
+            'additional_sources' => [
+                [
+                    'path' => 'BE/BE0101/BE0101G/ManadBefStatRegion',
+                    'query' => [
+                        'Region' => ['00'],
+                        'Forandringar' => ['230'],
+                        'Kon' => ['1+2'],
+                        'ContentsCode' => ['000003KD'],
+                        'Tid' => ['*'],
+                    ],
+                ]
+            ],
         ],
         [
             'slug' => 'asylsokande',

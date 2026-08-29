@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { PointerEvent } from 'react';
 import {
+    Area,
     Brush,
     CartesianGrid,
     ComposedChart,
@@ -755,7 +756,28 @@ export function StatisticChart({
                                           (index - 1) % comparisonColors.length
                                       ];
 
-                            return (
+                            return series.chartType === 'area' ? (
+                                <Area
+                                    key={geography}
+                                    type="monotone"
+                                    dataKey={geography}
+                                    name={
+                                        geographyLabels.get(geography) ??
+                                        geography
+                                    }
+                                    stackId="total"
+                                    stroke={lineColor}
+                                    fill={lineColor}
+                                    fillOpacity={0.72}
+                                    connectNulls
+                                    activeDot={{
+                                        r: 4,
+                                        fill: lineColor,
+                                        stroke: '#fffaf4',
+                                        strokeWidth: 2,
+                                    }}
+                                />
+                            ) : (
                                 <Line
                                     key={geography}
                                     type="monotone"
